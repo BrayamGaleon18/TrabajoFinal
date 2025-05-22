@@ -2,7 +2,6 @@
 import java.util.List;
 
     public class Equipo extends EquipoFutbol{
-        private List<String> ultimos5Partidos;
         private int golesTotales;
         private int golesHechos;
         private int victorias;
@@ -13,10 +12,10 @@ import java.util.List;
         private int rojas;
         private int faltas;
 
-        public Equipo(String nombre, List<String> ultimos5Partidos, int golesTotales, int golesHechos, int victorias,
+        public Equipo(String nombre, int golesTotales, int golesHechos, int victorias,
                       int empates, int derrotas, int tirosEsquinaAFavor, int amarillas, int rojas, int faltas) {
             super(nombre);
-            this.ultimos5Partidos = ultimos5Partidos;
+
             this.golesTotales = golesTotales;
             this.golesHechos = golesHechos;
             this.victorias = victorias;
@@ -28,14 +27,6 @@ import java.util.List;
             this.faltas = faltas;
         }
 
-
-        public List<String> getUltimos5Partidos() {
-            return ultimos5Partidos;
-        }
-
-        public void setUltimos5Partidos(List<String> ultimos5Partidos) {
-            this.ultimos5Partidos = ultimos5Partidos;
-        }
 
         public int getGolesTotales() {
             return golesTotales;
@@ -112,7 +103,6 @@ import java.util.List;
         @Override
         public String toString() {
             return "Equipo{" +
-                    "ultimos5Partidos=" + ultimos5Partidos +
                     ", golesTotales=" + golesTotales +
                     ", golesHechos=" + golesHechos +
                     ", victorias=" + victorias +
@@ -125,25 +115,66 @@ import java.util.List;
                     '}';
         }
 
+
         @Override
         public void mostrarEstadisticas() {
-            System.out.println("\n--- ESTADISTICAS DEL EQUIPO :   " + nombre + "   EN LOS ULTIMOS 5 ENCUENTROS ---\n");
-            System.out.println("Últimos 5 partidos: " + ultimos5Partidos);
-            System.out.println("Goles recibidos: " + golesTotales + " | Promedio de goles recibidos por partido: " + (golesTotales / 5.0));
-            System.out.println("Goles a favor: " + golesHechos + " | Promedio de goles a favor por partido: " + (golesHechos / 5.0));
-            System.out.println("Victorias: " + victorias + " | Promedio de victorias en los ultimos 5 partidos: " + (victorias / 5.0));
-            System.out.println("Empates: " + empates + " | Promedio de empate en los ultimos 5 partidos: " + (empates / 5.0));
-            System.out.println("Derrotas: " + derrotas + " | Promedio de derrotas en los ultimos 5 partidos: " + (derrotas / 5.0));
-            System.out.println("Tiros de esquina a favor: " + tirosEsquinaAFavor + " | Promedio de tiros de esquina en los ultimos 5 partidos: " + (tirosEsquinaAFavor / 5.0));
-            System.out.println("Tarjetas amarillas: " + amarillas + " | Promedio de tarjetas amarillas por partido: " + (amarillas / 5.0));
-            System.out.println("Tarjetas rojas: " + rojas + " | Promedio de tarjetas rojas por partido: " + (rojas / 5.0));
-            System.out.println("Faltas cometidas: " + faltas + " | Promedio de faltas por partido: " + (faltas / 5.0)+ "\n");
+            final String RESET = "\u001B[0m";
+            final String ROJO = "\u001B[31m";
+            final String AZUL = "\u001B[34m";
+            final String BLANCO = "\u001B[37m";
 
+            System.out.println("\n" + AZUL + "--------------------"+ROJO+" ESTADÍSTICAS DEL EQUIPO: " +BLANCO+ nombre.toUpperCase() +AZUL+ " --------------------" + RESET + "\n");
+
+            System.out.println(ROJO + padRight("ESTADÍSTICA", 30) + padRight("TOTAL", 10) + "PROMEDIO POR PARTIDO" + RESET);
+            System.out.println(AZUL + "--------------------------------------------------------------------------" + RESET);
+
+            imprimirFila("Goles recibidos", golesTotales);
+            imprimirFila("Goles a favor", golesHechos);
+            imprimirFila("Victorias", victorias);
+            imprimirFila("Empates", empates);
+            imprimirFila("Derrotas", derrotas);
+            imprimirFila("Tiros de esquina a favor", tirosEsquinaAFavor);
+            imprimirFila("Tarjetas amarillas", amarillas);
+            imprimirFila("Tarjetas rojas", rojas);
+            imprimirFila("Faltas cometidas", faltas);
+
+            System.out.println(AZUL + "--------------------------------------------------------------------------\n" + RESET);
         }
+
+        private void imprimirFila(String titulo, int total) {
+
+            final String RESET = "\u001B[0m";
+            double promedio = total / 5.0;
+            System.out.println( padRight(titulo, 30) + padRight(String.valueOf(total), 10) + String.format("%.2f", promedio) + RESET);
+        }
+
+
+        public String padRight(String texto, int longitud) {
+            while (texto.length() < longitud) {
+                texto += " ";
+            }
+            return texto;
+        }
+
+        public static Equipo desdeTexto(String texto) {
+
+            int golesRecibidos, golesHechos, victorias, empates, derrotas, tirosEsquina, amarillas, rojas, faltas;
+
+            String[] partes = texto.split(";");
+            String nombre = partes[0];
+            List<String> ultimos5 = List.of(partes[1].split(","));
+            golesRecibidos = Integer.parseInt(partes[2]);
+            golesHechos = Integer.parseInt(partes[3]);
+            victorias = Integer.parseInt(partes[4]);
+            empates = Integer.parseInt(partes[5]);
+            derrotas = Integer.parseInt(partes[6]);
+            tirosEsquina = Integer.parseInt(partes[7]);
+            amarillas = Integer.parseInt(partes[8]);
+            rojas = Integer.parseInt(partes[9]);
+            faltas = Integer.parseInt(partes[10]);
+
+            return new Equipo(nombre, golesRecibidos, golesHechos, victorias, empates,
+                    derrotas, tirosEsquina, amarillas, rojas, faltas);
+        }
+
     }
-
-
-
-
-
-

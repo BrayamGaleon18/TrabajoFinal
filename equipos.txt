@@ -1,0 +1,9 @@
+Equipo: mineros
+Últimos 5 partidos: [victoria, victoria, victoria, derrota, empate]
+Goles recibidos: 20
+Goles hechos: 52
+Victorias: 3, Empates: 1, Derrotas: 1
+Tiros de esquina: 52
+Amarillas: 21, Rojas: 10
+Faltas cometidas: 85
+-------------------------------------
